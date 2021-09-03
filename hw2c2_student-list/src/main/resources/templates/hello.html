@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Server Programming</title>
+</head>
+<body>
+	<h1 th:text="'Hello students'">Hello</h1>
+
+	<table>
+		<tr th:each="student : ${students}">
+			<td th:text="${student.firstName} + ' ' +${student.lastName}">1</td>
+		</tr>
+	</table>
+	
+</body>
+</html>
