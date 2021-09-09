@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Server Programming</title>
+</head>
+<body>
+	<h1 th:text="'Bookstore!'">Hello</h1>
+	
+		<div th:each="book : ${books}">
+			<table>
+					<tr>
+						<th>title</th>
+						<th>author</th>
+						<th>year</th>
+						<th>isbn</th>
+						<th>price</th>
+					</tr>
+					<tr>
+						<td th:text=${book.title}>
+						</td>
+						<td th:text=${book.author}>
+						</td>
+						<td th:text=${book.year}>
+						</td>
+						<td th:text=${book.isbn}>
+						</td>
+						<td th:text=${book.price}>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	
+	
+	<h1 th:text="'Add new book to list'"></h1>
+	<form action="#" th:action="@{/index}" th:object="${book}" method="post">
+		<p>Title: <input type="text" th:field="*{title}" /></p>
+		<p>Author: <input type="text" th:field="*{author}" /></p>
+		<p>Year: <input type="number" th:field="*{year}" /></p>
+		<p>isbn: <input type="number" th:field="*{isbn}" /></p>
+		<p>Price: <input type="number" th:field="*{price}" /></p>
+		<p><input type="submit" value="Submit" /></p>
+	</form>
+
+</body>
+</html>
