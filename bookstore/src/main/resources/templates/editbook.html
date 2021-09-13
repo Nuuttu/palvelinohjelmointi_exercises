@@ -31,6 +31,12 @@
 				<input type="number" step="0.01" th:field="*{price}" />
 			</div>
 			<div class="form-group">
+				<label for="catlist">Category</label>
+				<select id="catlist" th:field="*{category}">
+					<option th:each="category: ${categories}" th:value="${category.categoryid}" th:text="${category.name}"></option>
+				</select> 
+			</div>
+			<div class="form-group">
 				<input type="submit" value="edit"></input>
 			</div>
 		</form>
