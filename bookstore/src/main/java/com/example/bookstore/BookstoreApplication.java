@@ -22,7 +22,7 @@ public class BookstoreApplication {
 	}
 	
 	@Bean
-	public CommandLineRunner studentDemo(BookRepository bookrepo, CategoryRepository catrepo) {
+	public CommandLineRunner bookDemo(BookRepository bookrepo, CategoryRepository catrepo) {
 		return (args) -> {
 			log.info("save a couple of categories and books");
 			catrepo.save(new Category("Thriller"));
