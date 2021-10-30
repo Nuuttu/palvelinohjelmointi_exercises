@@ -3,9 +3,10 @@
 <head>
     <title>Booklist</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 </head>
 <body>
+<div th:replace="fragments/header :: header">&nbsp;</div>
 <div class="container">
 	<h1>Ogle Event</h1>
 	<div th:object="${event}" >
@@ -21,6 +22,10 @@
 						<tr>
 							<th scope="col">date</th>
 							<td th:text=*{get().datetime}></td>
+						</tr>
+						<tr>
+						<th scope="col">owner</th>
+						<td th:text=*{get().user.username}></td>
 						</tr>
 					</tbody>
 				</table>

@@ -19,13 +19,19 @@ public class Event {
 	 private String description;
 	 private String datetime;
 	 
+	 @ManyToOne
+	 @JoinColumn(name = "event")
+	 @JsonManagedReference
+	 private User user;
+	 
 	 public Event() {}
 	 
-	public Event(String title, String description, String datetime) {
+	public Event(String title, String description, String datetime, User user) {
 		super();
 		this.title = title;
 		this.description = description;
 		this.datetime = datetime;
+		this.user = user;
 	}
 	
 	
@@ -53,10 +59,16 @@ public class Event {
 	public void setDatetime(String datetime) {
 		this.datetime = datetime;
 	}
+	public User getUser() {
+		return user;
+	}
+	public void setUser(User user) {
+		this.user = user;
+	}
 	 
 	
 	@Override
 	public String toString() {
-		return "Event [id=" + id + ", title=" + title + ", description=" + description + ", datetime=" + datetime + "]";
+		return "Event [id=" + id + ", title=" + title + ", description=" + description + ", datetime=" + datetime + ", user=" + user + "]";
 	}
 }

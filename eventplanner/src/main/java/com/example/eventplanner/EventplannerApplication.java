@@ -40,16 +40,19 @@ public class EventplannerApplication {
 	@Bean
 	public CommandLineRunner EventDemo(EventRepository erepo, UserRepository urepo) {
 		return (args) -> {
+			User user = new User("user", "$2a$06$3jYRJrg0ghaaypjZ/.g4SethoeA51ph3UD4kZi9oPkeMTpjKU5uo6", "USER");
+			urepo.save(user);
+			User admin = new User("admin", "$2a$10$0MMwY.IQqpsVc1jC8u7IJ.2rT8b0Cd3b3sfIBGV2zfgnPGtT4r0.C", "ADMIN");
+			urepo.save(admin);
+			
 			Date date = new Date();
 			System.out.println(date.getTime());
 			DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
 			System.out.println(date);
 			System.out.println(sdf.format(date));
-			erepo.save(new Event("Event1", "dsdsd", date.toString()));
-			erepo.save(new Event("Event2", "This is a event 2", date.toString()));
+			erepo.save(new Event("Event1", "dsdsd", date.toString(), urepo.findByUsername("user")));
+			erepo.save(new Event("Event2", "This is a event 2", date.toString(), urepo.findByUsername("user")));
 			
-			urepo.save(new User("user", "$2a$06$3jYRJrg0ghaaypjZ/.g4SethoeA51ph3UD4kZi9oPkeMTpjKU5uo6", "USER"));
-			urepo.save(new User("admin", "$2a$10$0MMwY.IQqpsVc1jC8u7IJ.2rT8b0Cd3b3sfIBGV2zfgnPGtT4r0.C", "ADMIN"));
 			
 			log.info("log indo");
 		};

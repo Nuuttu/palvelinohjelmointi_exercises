@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-
+import com.example.eventplanner.domain.Event;
 import com.example.eventplanner.domain.EventRepository;
 import com.example.eventplanner.domain.User;
 import com.example.eventplanner.domain.UserRepository;
@@ -31,18 +31,18 @@ public class EventplannerController {
     private BCryptPasswordEncoder passwordEncoder;
 
 	@RequestMapping(value={"/", "/index"})
-	public String Index(Model model) {
+	public String index(Model model) {
 		model.addAttribute("events", erepo.findAll());
 		return "index";
 	}
 	
 	@RequestMapping(value="/logoutpage")
-	public String Logout() {
+	public String logout() {
 		return "logoutpage";
 	}
 	
 	@RequestMapping(value="/event/{id}", method = RequestMethod.GET)
-	public String EventPageSingle(@PathVariable("id") Long eventId, Model model) {
+	public String eventPageSingle(@PathVariable("id") Long eventId, Model model) {
 
 		model.addAttribute("event", erepo.findById(eventId));
 		model.addAttribute("events", erepo.findAll());
@@ -67,4 +67,26 @@ public class EventplannerController {
 	  }
 	
 
+	// REST API
+	// USERS
+	@RequestMapping(value = "/users", method = RequestMethod.GET)	  
+	  public @ResponseBody List<User> userListRest() {
+	    return (List<User>) urepo.findAll();
+	  }
+	// By id
+	 @RequestMapping(value="/users/{id}", method = RequestMethod.GET)
+	    public @ResponseBody Optional<User> findUserRest(@PathVariable("id") Long userId) {	
+	    	return urepo.findById(userId);
+	 	}  
+	// EVENTS  
+	@RequestMapping(value = "/events", method = RequestMethod.GET)	  
+	  public @ResponseBody List<Event> eventListRest() {
+	    return (List<Event>) erepo.findAll();
+	  }
+	// BY ID
+	@RequestMapping(value="/events/{id}", method = RequestMethod.GET)
+    public @ResponseBody Optional<Event> findEventRest(@PathVariable("id") Long eventId) {	
+    	return erepo.findById(eventId);
+ 	}  
+	  
 }

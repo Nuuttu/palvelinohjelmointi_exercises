@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+	  
+<head>
+<title>The Event planner</title>
+</head>
+<body>
+	<div class="navbar navbar-expand-lg navbar-light bg-light" th:fragment="header">
+	  <div class="container-fluid">
+	    <div class="navbar-header">
+	      <a class="navbar-brand" href="/">Event Planner</a>
+	    </div>
+	    <ul class="nav navbar-nav">
+	      <li class="active"><a href='/'>Home</a></li>
+	      <li><a href="/api">api</a></li>
+	    </ul>
+	    <ul class="nav navbar-nav navbar-right">
+	      <li><a href="/signin"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+	      <li><a href="/login"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+	    </ul>
+	  </div>
+	</div>
+	
+</body>
+</html>

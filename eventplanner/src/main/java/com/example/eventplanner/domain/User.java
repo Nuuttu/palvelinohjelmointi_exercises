@@ -1,6 +1,10 @@
 package com.example.eventplanner.domain;
 
+import java.util.List;
+
 import javax.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "usertable")
@@ -20,6 +24,10 @@ public class User {
 
     @Column(name = "role", nullable = false)
     private String role;
+    
+    @JsonIgnore
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+    private List<Event> events;
     
     public User() {
     }
@@ -61,6 +69,13 @@ public class User {
 
 	public void setRole(String role) {
 		this.role = role;
+	}
+	
+	public List<Event> getEvents() {
+		return events;
+	}
+	public void setEvents(List<Event> events) {
+		this.events = events;
 	}
 
 }
