@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Booklist</title>
+    <title>Event Planner - Event</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 </head>
@@ -11,27 +11,43 @@
 	<h1>Ogle Event</h1>
 	<div th:object="${event}" >
 		<table class="table">
-						<tr>
-							<th scope="col">title</th>
-							<td th:text="*{get().title}"></td>
-						</tr>
-						<tr>
-							<th scope="col">description</th>
-							<td th:text=*{get().description}></td>
-						</tr>
-						<tr>
-							<th scope="col">date</th>
-							<td th:text=*{get().datetime}></td>
-						</tr>
-						<tr>
-						<th scope="col">owner</th>
-						<td th:text=*{get().user.username}></td>
-						</tr>
-					</tbody>
-				</table>
+			<tbody>
+				<tr>
+					<th scope="col">title</th>
+					<td th:text="*{get().title}"></td>
+				</tr>
+				<tr>
+					<th scope="col">description</th>
+					<td th:text="*{get().description}"></td>
+				</tr>
+				<tr>
+					<th scope="col">date</th>
+					<td th:text="*{get().datetime}"></td>
+				</tr>
+				<tr>
+					<th scope="col">owner</th>
+					<td th:text="*{get().owner.username}"></td>
+				</tr>
+				<tr>
+					<th scope="col">members</th>
+					<td th:text="*{#lists.size(get().members)}"></td>
+				</tr>
+			</tbody>
+		</table>
+		
+		<h3>Members</h3>
+		<table class="table">
+			<tbody>
+				<tr th:each="member : *{#lists.toList(get().members)}">
+					<td th:text="${member.username}"></td>
+				</tr>
+			</tbody>
+		</table>
+		 
 	</div>
 
-	
+						
 </div>
+<div th:replace="fragments/footer :: footer">&nbsp;</div>
 </body>
 </html>

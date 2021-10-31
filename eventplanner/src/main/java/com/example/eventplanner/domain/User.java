@@ -26,7 +26,7 @@ public class User {
     private String role;
     
     @JsonIgnore
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "owner")
     private List<Event> events;
     
     public User() {

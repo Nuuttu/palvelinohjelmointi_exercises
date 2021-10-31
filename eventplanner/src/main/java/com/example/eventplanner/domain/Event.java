@@ -1,11 +1,15 @@
 package com.example.eventplanner.domain;
 
+import java.util.List;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
@@ -22,18 +26,31 @@ public class Event {
 	 @ManyToOne
 	 @JoinColumn(name = "event")
 	 @JsonManagedReference
-	 private User user;
+	 private User owner;
+	 
+	 @ManyToMany
+	 @JoinColumn(name = "event")
+	 @JsonManagedReference
+	 private List<User> members;
 	 
 	 public Event() {}
 	 
-	public Event(String title, String description, String datetime, User user) {
+	public Event(String title, String description, String datetime, User owner) {
 		super();
 		this.title = title;
 		this.description = description;
 		this.datetime = datetime;
-		this.user = user;
+		this.owner = owner;
 	}
 	
+	public Event(String title, String description, String datetime, User owner, List<User> members) {
+		super();
+		this.title = title;
+		this.description = description;
+		this.datetime = datetime;
+		this.owner = owner;
+		this.members = members;
+	}
 	
 	public Long getId() {
 		return id;
@@ -59,16 +76,22 @@ public class Event {
 	public void setDatetime(String datetime) {
 		this.datetime = datetime;
 	}
-	public User getUser() {
-		return user;
+	public User getOwner() {
+		return owner;
 	}
-	public void setUser(User user) {
-		this.user = user;
+	public void setOwner(User owner) {
+		this.owner = owner;
+	}
+	public List<User> members() {
+		return members;
+	}
+	public void setMembers(List<User> members) {
+		this.members = members;
 	}
 	 
 	
 	@Override
 	public String toString() {
-		return "Event [id=" + id + ", title=" + title + ", description=" + description + ", datetime=" + datetime + ", user=" + user + "]";
+		return "Event [id=" + id + ", title=" + title + ", description=" + description + ", datetime=" + datetime + ", owner=" + owner + "]";
 	}
 }

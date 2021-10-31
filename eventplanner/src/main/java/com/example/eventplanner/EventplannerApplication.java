@@ -15,7 +15,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import com.example.eventplanner.domain.Event;
 import com.example.eventplanner.domain.EventRepository;
@@ -30,8 +32,6 @@ public class EventplannerApplication {
 		SpringApplication.run(EventplannerApplication.class, args);
 	}
 	
-	private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-	
 	@Bean
 	BCryptPasswordEncoder bCryptPasswordEncoder() {
 		return new BCryptPasswordEncoder();
@@ -40,25 +40,27 @@ public class EventplannerApplication {
 	@Bean
 	public CommandLineRunner EventDemo(EventRepository erepo, UserRepository urepo) {
 		return (args) -> {
+			
 			User user = new User("user", "$2a$06$3jYRJrg0ghaaypjZ/.g4SethoeA51ph3UD4kZi9oPkeMTpjKU5uo6", "USER");
 			urepo.save(user);
 			User admin = new User("admin", "$2a$10$0MMwY.IQqpsVc1jC8u7IJ.2rT8b0Cd3b3sfIBGV2zfgnPGtT4r0.C", "ADMIN");
 			urepo.save(admin);
 			
 			Date date = new Date();
-			System.out.println(date.getTime());
-			DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
-			System.out.println(date);
-			System.out.println(sdf.format(date));
-			erepo.save(new Event("Event1", "dsdsd", date.toString(), urepo.findByUsername("user")));
-			erepo.save(new Event("Event2", "This is a event 2", date.toString(), urepo.findByUsername("user")));
+			DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm");
+
+			List<User> e1members = new ArrayList<User>();
+			e1members.add(user);
+			List<User> e2members = new ArrayList<User>();
+			e2members.add(user);
+			e2members.add(admin);
 			
+			Event event1 = new Event("Event1", "dsdsd", formatter.format(date), urepo.findByUsername("user"), e1members);
+			erepo.save(event1);
+			Event event2 = new Event("Event2", "This is a event 2", formatter.format(date), urepo.findByUsername("user"), e2members);
+			erepo.save(event2);
 			
 			log.info("log indo");
 		};
-		
 	}
-
-
-
 }

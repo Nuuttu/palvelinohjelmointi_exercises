@@ -11,34 +11,34 @@
 	<div th:replace="fragments/header :: header">&nbsp;</div>
 	
 	<div class="container">
-	
-
-	
 		<h1 th:text="'Event planner'">Hello</h1>
-		
-			<div >
-				<table class="table">
-						<tr>
-							<th scope="col">title</th>
-							<th scope="col">description</th>
-							<th scope="col">date</th>
-							<th scope="col">owner</th>
-						</tr>
-						<tr th:each="event : ${events}">
-							<td> <a th:href="${'/event/' + event.id}" th:text="${event.title}"/> 
-							</td>
-							<td th:text=${event.description}>
-							</td>
-							<td th:text=${event.datetime}>
-							</td>
-							<td th:text=${event.user.username}>
-							</td>
-							
-						</tr>
-					</tbody>
-				</table>
-			</div>
-	
+		<div >
+			<table class="table">
+				<tbody>
+					<tr>
+						<th scope="col">title</th>
+						<th scope="col">description</th>
+						<th scope="col">date</th>
+						<th scope="col">members</th>
+						<th scope="col">owner</th>
+					</tr>
+					<tr th:each="event : ${events}">
+						<td> <a th:href="${'/event/' + event.id}" th:text="${event.title}"></a></td>
+						<td th:text=${event.description}></td>
+						<td th:text=${event.datetime}></td>
+						<td th:text=${#lists.size(event.members)}></td>
+						<td th:text=${event.owner.username}></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div sec:authorize="isAuthenticated()">
+			<form action="/event/add" >
+				<input type="submit" class="btn btn-sm btn-primary" value="add event" ></input>
+			</form>
+		</div>
 	</div>
+	
+	<div th:replace="fragments/footer :: footer">&nbsp;</div>
 </body>
 </html>

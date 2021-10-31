@@ -4,7 +4,10 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -49,13 +52,38 @@ public class EventplannerController {
 		return "eventpagesingle";
 	}
 	
+	@RequestMapping(value="/event/add")
+	public String addEvent(Model model) {
+		model.addAttribute("event", new Event());
+		return "eventadd";
+	}
+	
+	@PreAuthorize("isAuthenticated()")
+	@RequestMapping(value="/event/save")
+	public String saveEvent(Event event) {
+		Authentication loggedUser = SecurityContextHolder.getContext().getAuthentication();
+		String userName = loggedUser.getName();
+		User user = urepo.findByUsername(userName);
+		Event newEvent = event;
+		newEvent.setOwner(user);
+		System.out.println(event.getTitle());
+		System.out.println(event.getDescription());
+		System.out.println(event.getDatetime());
+		System.out.println(event.getOwner().getUsername());
+		if (event.getTitle() == "" || event.getDatetime() == "") {
+			return "redirect:/";
+		}
+		erepo.save(newEvent);
+		return "redirect:../";
+	}
+	
 	@RequestMapping(value = "/signin")
 	  public String addUser(Model model) {
 	    model.addAttribute("user", new User());
 	    return "signinpage";
 	  }
 	
-	@RequestMapping(value = "/save/user", method = RequestMethod.POST)
+	@RequestMapping(value = "/user/save", method = RequestMethod.POST)
 	  public String saveUser(User user) {
 		// urepo.save(new User("user", "$2a$06$3jYRJrg0ghaaypjZ/.g4SethoeA51ph3UD4kZi9oPkeMTpjKU5uo6", "USER"));
 		final String encodedPassword = passwordEncoder.encode(user.getPasswordHash());
@@ -67,6 +95,8 @@ public class EventplannerController {
 	  }
 	
 
+	
+	
 	// REST API
 	// USERS
 	@RequestMapping(value = "/users", method = RequestMethod.GET)	  
@@ -87,6 +117,25 @@ public class EventplannerController {
 	@RequestMapping(value="/events/{id}", method = RequestMethod.GET)
     public @ResponseBody Optional<Event> findEventRest(@PathVariable("id") Long eventId) {	
     	return erepo.findById(eventId);
- 	}  
-	  
+ 	}
+	// SAVE EVENT
+	@PreAuthorize("isAuthenticated()")
+	@RequestMapping(value="/events/save")
+	public @ResponseBody String saveEventRest(Event event) {
+		Authentication loggedUser = SecurityContextHolder.getContext().getAuthentication();
+		String userName = loggedUser.getName();
+		User user = urepo.findByUsername(userName);
+		Event newEvent = event;
+		newEvent.setOwner(user);
+		System.out.println(event.getTitle());
+		System.out.println(event.getDescription());
+		System.out.println(event.getDatetime());
+		System.out.println(event.getOwner().getUsername());
+		if (event.getTitle() == "" || event.getDatetime() == "") {
+			return "redirect:/";
+		}
+		erepo.save(newEvent);
+		return "redirect:../";
+	}
+	 
 }

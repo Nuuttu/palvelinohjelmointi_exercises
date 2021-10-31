@@ -11,15 +11,26 @@
 	<div class="navbar navbar-expand-lg navbar-light bg-light" th:fragment="header">
 	  <div class="container-fluid">
 	    <div class="navbar-header">
-	      <a class="navbar-brand" href="/">Event Planner</a>
+	    	<a class="navbar-brand" href="/">Event Planner</a>
 	    </div>
 	    <ul class="nav navbar-nav">
-	      <li class="active"><a href='/'>Home</a></li>
-	      <li><a href="/api">api</a></li>
+	    	<li class="active"><a href='/'>Home</a></li>
+	    	<li><a href="/api">api</a></li>
+	    	<li sec:authorize="isAuthenticated()"><a href="/event/add">add event</a></li>
 	    </ul>
 	    <ul class="nav navbar-nav navbar-right">
-	      <li><a href="/signin"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
-	      <li><a href="/login"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+	    	<li sec:authorize="isAuthenticated()">
+	    		<a><span class="glyphicon glyphicon-user"></span> [[${#httpServletRequest.remoteUser}]]</a>
+	    	</li>
+	    	<li sec:authorize="isAuthenticated()">
+	    		<a href="/logout"><span class="glyphicon glyphicon-log-out"></span> Logout</a>
+	    	</li>
+	    	<li sec:authorize="isAnonymous()">
+	    		<a href="/signin"><span class="glyphicon glyphicon-user"></span> Sign Up</a>
+	    	</li>
+	    	<li sec:authorize="isAnonymous()">
+	    		<a href="/login"><span class="glyphicon glyphicon-log-in"></span> Login</a>
+	    	</li>
 	    </ul>
 	  </div>
 	</div>
