@@ -3,6 +3,8 @@ package com.example.eventplanner.web;
 import java.util.List;
 import java.util.Optional;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -11,7 +13,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -58,6 +62,29 @@ public class EventplannerController {
 		return "eventadd";
 	}
 	
+	@RequestMapping(value="/event/{id}/edit")
+	public String editEvent(@PathVariable("id") Long EventId, Model model) {
+		model.addAttribute("event", erepo.findById(EventId));
+		return "eventedit";
+	}
+	
+	@PreAuthorize("isAuthenticated()")
+	@RequestMapping(value="/event/edit/save")
+	public String saveEditEvent(Event event) {
+		Event newEvent = erepo.findById(event.getId()).orElse(null);
+		newEvent.setTitle(event.getTitle());
+		newEvent.setDescription(event.getDescription());
+		newEvent.setDatetime(event.getDatetime());
+		Authentication loggedUser = SecurityContextHolder.getContext().getAuthentication();
+		String userName = loggedUser.getName();
+		User cuser = urepo.findByUsername(userName);
+		if (newEvent.getTitle() == "" || newEvent.getDatetime() == "" || !newEvent.getOwner().equals(cuser)) {
+			return "redirect:/";
+		}
+		erepo.save(newEvent);
+		return "redirect:/index";
+	}
+	
 	@PreAuthorize("isAuthenticated()")
 	@RequestMapping(value="/event/save")
 	public String saveEvent(Event event) {
@@ -66,16 +93,34 @@ public class EventplannerController {
 		User user = urepo.findByUsername(userName);
 		Event newEvent = event;
 		newEvent.setOwner(user);
-		System.out.println(event.getTitle());
-		System.out.println(event.getDescription());
-		System.out.println(event.getDatetime());
-		System.out.println(event.getOwner().getUsername());
 		if (event.getTitle() == "" || event.getDatetime() == "") {
 			return "redirect:/";
 		}
 		erepo.save(newEvent);
 		return "redirect:../";
 	}
+	
+	@PreAuthorize("isAuthenticated()")
+	@RequestMapping(value="/event/{id}/addmember")
+	public String addMember(@RequestBody String formData, @PathVariable("id") Long EventId, HttpServletRequest request) {
+		Event newEvent = erepo.findById(EventId).orElse(null);
+		//User muser = urepo.finByUserName(formData.)
+		// https://www.baeldung.com/spring-request-response-body
+		// ASDASDASDASDAS
+		// PITÄÄKÖ MUKA TEHÄ OMA LUOKKA hmmhmm
+		
+		//asdasdasdasd
+		Authentication loggedUser = SecurityContextHolder.getContext().getAuthentication();
+		String userName = loggedUser.getName();
+		User cuser = urepo.findByUsername(userName);
+		if (!newEvent.getOwner().equals(cuser)) {
+			return "redirect:/";
+		}
+		
+		String referer = request.getHeader("Referer");
+		return "redirect:" + referer;
+	}
+	
 	
 	@RequestMapping(value = "/signin")
 	  public String addUser(Model model) {

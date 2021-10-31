@@ -28,6 +28,11 @@
 						<td th:text=${event.datetime}></td>
 						<td th:text=${#lists.size(event.members)}></td>
 						<td th:text=${event.owner.username}></td>
+						<td sec:authorize="isAuthenticated()">
+							<form th:action="${'/event/' + event.id + '/edit'}" >
+								<input type="submit" class="btn btn-sm btn-info" value="edit" ></input>
+							</form>
+						</td>
 					</tr>
 				</tbody>
 			</table>

@@ -8,7 +8,12 @@
 <body>
 <div th:replace="fragments/header :: header">&nbsp;</div>
 <div class="container">
-	<h1>Ogle Event</h1>
+	<div th:object=${event}>
+		<h1 style="display: inline-block;">Ogle Event</h1>
+		<form th:action="*{'/event/' + get().id + '/edit'}"  sec:authorize="isAuthenticated()" style="display: inline-block;">
+			<input type="submit" class="btn btn-sm btn-info" value="edit" ></input>
+		</form>
+	</div>
 	<div th:object="${event}" >
 		<table class="table">
 			<tbody>
@@ -35,7 +40,13 @@
 			</tbody>
 		</table>
 		
-		<h3>Members</h3>
+		<div>
+			<h3 style="display: inline-block;">Members</h3>
+			<form th:action="*{'/event/' + get().id + '/addmember'}" action="#" method="post" sec:authorize="isAuthenticated()" style="display: inline-block;">
+				<input type="submit" class="btn btn-sm btn-info" value="add member" ></input>
+				<input type="text" name="addmember" id="addmember" required />
+			</form>
+		</div>
 		<table class="table">
 			<tbody>
 				<tr th:each="member : *{#lists.toList(get().members)}">
