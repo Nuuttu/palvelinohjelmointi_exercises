@@ -3,16 +3,18 @@
 <head>
     <title>Event Planner - Event</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 </head>
 <body>
 <div th:replace="fragments/header :: header">&nbsp;</div>
 <div class="container">
-	<div th:object=${event}>
+	<div sec:authorize="isAuthenticated()" th:object=${event}>
 		<h1 style="display: inline-block;">Ogle Event</h1>
 		<form th:action="*{'/event/' + get().id + '/edit'}"  sec:authorize="isAuthenticated()" style="display: inline-block;">
 			<input type="submit" class="btn btn-sm btn-info" value="edit" ></input>
 		</form>
+		
 	</div>
 	<div th:object="${event}" >
 		<table class="table">
@@ -27,8 +29,10 @@
 				</tr>
 				<tr>
 					<th scope="col">date</th>
-					<td th:text="*{get().datetime}"></td>
+					<td th:text=*{#strings.substringBefore(get().datetime,"T")}></td>
 				</tr>
+					<th scope="col">time</th>
+					<td th:text=*{#strings.substringAfter(get().datetime,"T")}></td>
 				<tr>
 					<th scope="col">owner</th>
 					<td th:text="*{get().owner.username}"></td>
@@ -39,24 +43,53 @@
 				</tr>
 			</tbody>
 		</table>
-		
-		<div>
-			<h3 style="display: inline-block;">Members</h3>
-			<form th:action="*{'/event/' + get().id + '/addmember'}" action="#" method="post" sec:authorize="isAuthenticated()" style="display: inline-block;">
-				<input type="submit" class="btn btn-sm btn-info" value="add member" ></input>
-				<input type="text" name="addmember" id="addmember" required />
-			</form>
-		</div>
-		<table class="table">
-			<tbody>
-				<tr th:each="member : *{#lists.toList(get().members)}">
-					<td th:text="${member.username}"></td>
-				</tr>
-			</tbody>
-		</table>
-		 
+		<div class="container-fluid">
+			<div class="row">
+			<div class="col-lg-4">
+				<div th:object="${member}">
+					<h3 style="display: inline-block;">Members</h3>
+					<form th:action="${'/event/' + event.get().id + '/addmember'}" action="#" method="post" sec:authorize="isAuthenticated()" style="display: inline-block;">
+						<input type="submit" class="btn btn-sm btn-info" value="add member" ></input>
+						<input type="text" th:field="*{addmember}" required />
+					</form>
+				</div>
+				<table class="table">
+					<tbody>
+						<tr th:each="member : *{#lists.toList(get().members)}">
+							<td th:text="${member.username}"></td>
+							<td class="text-right" sec:authorize="isAuthenticated()" >
+								<form th:action="@{/event/__${event.get().id}__/removemember/__${member.id}__}">
+									<input type="submit" class="btn btn-sm btn-danger" value="Delete"></input>
+								</form>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+				</div>
+				<div class="col-lg-6">
+					<h3>Comments</h3>
+					<div th:object="${comment}">
+						<form th:action="${'/event/' + event.get().id + '/addcomment'}" action="#" method="post" sec:authorize="isAuthenticated()" style="display: inline-block;">
+							<input type="submit" class="btn btn-sm btn-info" value="comment" ></input>
+							<input type="text" th:field="*{content}" required />
+						</form>
+					 </div>
+					 
+					 <table class="table">
+						<tbody>
+							<tr th:each="comment : ${comments}">
+								<td th:text="${comment.content}"></td>
+								<td th:text="${comment.owner.username}"></td>
+								<td th:text=${#strings.substringBefore(comment.datetime,"T")}></td>
+								<td th:text=${#strings.substringAfter(comment.datetime,"T")}></td>
+							</tr>
+						</tbody>
+					</table>
+					 
+				</div>
+			</div>
+		 </div>
 	</div>
-
 						
 </div>
 <div th:replace="fragments/footer :: footer">&nbsp;</div>

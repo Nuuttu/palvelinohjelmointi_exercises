@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import com.example.eventplanner.domain.CommentRepository;
 import com.example.eventplanner.domain.Event;
 import com.example.eventplanner.domain.EventRepository;
 import com.example.eventplanner.domain.User;
@@ -38,7 +39,7 @@ public class EventplannerApplication {
 	}
 	
 	@Bean
-	public CommandLineRunner EventDemo(EventRepository erepo, UserRepository urepo) {
+	public CommandLineRunner EventDemo(EventRepository erepo, UserRepository urepo, CommentRepository crepo) {
 		return (args) -> {
 			
 			User user = new User("user", "$2a$06$3jYRJrg0ghaaypjZ/.g4SethoeA51ph3UD4kZi9oPkeMTpjKU5uo6", "USER");

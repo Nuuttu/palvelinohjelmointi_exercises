@@ -19,18 +19,25 @@
 						<th scope="col">title</th>
 						<th scope="col">description</th>
 						<th scope="col">date</th>
+						<th scope="col">time</th>
 						<th scope="col">members</th>
 						<th scope="col">owner</th>
 					</tr>
 					<tr th:each="event : ${events}">
 						<td> <a th:href="${'/event/' + event.id}" th:text="${event.title}"></a></td>
 						<td th:text=${event.description}></td>
-						<td th:text=${event.datetime}></td>
+						<td th:text=${#strings.substringBefore(event.datetime,"T")}></td>
+						<td th:text=${#strings.substringAfter(event.datetime,"T")}></td>
 						<td th:text=${#lists.size(event.members)}></td>
-						<td th:text=${event.owner.username}></td>
+						<td th:text=${event.owner.username}></td>						
 						<td sec:authorize="isAuthenticated()">
 							<form th:action="${'/event/' + event.id + '/edit'}" >
-								<input type="submit" class="btn btn-sm btn-info" value="edit" ></input>
+								<input type="submit" class="btn btn-sm btn-info" value="Edit" ></input>
+							</form>
+						</td>
+						<td sec:authorize="isAuthenticated()" >
+							<form th:action="${'/event/' + event.id + '/delete'}">
+								<input type="submit" class="btn btn-sm btn-danger" value="Delete"></input>
 							</form>
 						</td>
 					</tr>

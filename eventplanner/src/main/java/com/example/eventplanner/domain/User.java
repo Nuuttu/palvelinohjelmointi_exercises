@@ -5,6 +5,7 @@ import java.util.List;
 import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 @Table(name = "usertable")
@@ -29,8 +30,11 @@ public class User {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "owner")
     private List<Event> events;
     
-    public User() {
-    }
+    @JsonIgnore
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "owner") 
+	private List<Comment> comments;
+    
+    public User() {}
 
 	public User(String username, String passwordHash, String role) {
 		super();
@@ -76,6 +80,12 @@ public class User {
 	}
 	public void setEvents(List<Event> events) {
 		this.events = events;
+	}
+	public List<Comment> getComments() {
+		return comments;
+	}
+	public void setComments(List<Comment> comments) {
+		this.comments = comments;
 	}
 
 }

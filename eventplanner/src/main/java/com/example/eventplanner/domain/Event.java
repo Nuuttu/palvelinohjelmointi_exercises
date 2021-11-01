@@ -1,7 +1,9 @@
 package com.example.eventplanner.domain;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -18,13 +20,16 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 public class Event {
 	 @Id
 	 @GeneratedValue(strategy=GenerationType.AUTO)
+	 @Column(name = "id", nullable = false, updatable = false)
 	 private Long id;
+	 @Column(nullable = false)
 	 private String title;
 	 private String description;
+	 @Column(nullable = false)
 	 private String datetime;
 	 
 	 @ManyToOne
-	 @JoinColumn(name = "event")
+	 @JoinColumn(name = "event", nullable = false)
 	 @JsonManagedReference
 	 private User owner;
 	 
@@ -32,6 +37,11 @@ public class Event {
 	 @JoinColumn(name = "event")
 	 @JsonManagedReference
 	 private List<User> members;
+	 
+	 @OneToMany
+	 @JoinColumn(name="event")
+	 @JsonManagedReference
+	 private List<Comment> comments;
 	 
 	 public Event() {}
 	 
@@ -82,13 +92,40 @@ public class Event {
 	public void setOwner(User owner) {
 		this.owner = owner;
 	}
-	public List<User> members() {
+	public List<User> getMembers() {
 		return members;
 	}
 	public void setMembers(List<User> members) {
 		this.members = members;
 	}
-	 
+	public void addMember(User newMember) {
+		List<User> newList = new ArrayList<>(this.members);
+		newList.add(newMember);
+		setMembers(newList);
+	}
+	public void removeMember(User removedMember) {
+		List<User> newList = new ArrayList<>(this.members);
+		newList.remove(removedMember);
+		setMembers(newList);
+	}
+	/*
+	public List<Comment> getComments() {
+		return comments;
+	}
+	public void setComments(List<Comment> comments) {
+		this.comments = comments;
+	}
+	public void addComment(Comment newComment) {
+		List<Comment> newList = new ArrayList<>(this.comments);
+		newList.add(newComment);
+		setComments(newList);
+	}
+	public void removeComment(Comment removedComment) {
+		List<Comment> newList = new ArrayList<>(this.comments);
+		newList.remove(removedComment);
+		setComments(newList);
+	}
+	 */
 	
 	@Override
 	public String toString() {
