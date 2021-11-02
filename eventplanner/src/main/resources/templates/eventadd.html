@@ -4,31 +4,34 @@
     <title>Event Planner - add</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+	<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
 </head>
 <body>
 <div th:replace="fragments/header :: header">&nbsp;</div>
 <div class="container">
 	<h1>Add Event</h1>
-	<div class="col-md-2" style="padding:20px 0">
+	<div class="col-lg-7 col-sm-12 col-md-12 col-12 pb-4 p-2" >
 		<form th:object="${event}" th:action="@{/event/save}" action="#" method="post">
-			<div class="form-group">
+			<div class="form-group col">
 			  	<label for="title">Title</label>
 				<input type="text" id="title" th:field="*{title}" required />
 			</div>
-			<div class="form-group">
-			  	<label for="author">Description</label>
+				<!-- 
+			  	<label for="description">Description</label>
 				<input type="text" id="description" th:field="*{description}" />
+				 -->
+			<div class="form-group col">
+				<label for="descritpion">Description</label>
+				<textarea class="form-control" th:field="*{description}" />
 			</div>
 			<div class="form-group">
 			  	<label for="year">Date and Time</label>
 				<input type="datetime-local" id="datetime" th:field="*{datetime}" required />
 			</div>
-			
 			<div class="form-group">
 				<input type="submit" value="Save" class="btn btn-sm btn-primary"></input>
 			</div>
-	
 		</form>
 		
 		<form action="/">

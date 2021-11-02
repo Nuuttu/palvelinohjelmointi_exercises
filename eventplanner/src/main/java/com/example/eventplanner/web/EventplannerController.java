@@ -112,7 +112,7 @@ public class EventplannerController {
 		Authentication loggedUser = SecurityContextHolder.getContext().getAuthentication();
 		String userName = loggedUser.getName();
 		User cuser = urepo.findByUsername(userName);
-		if (newEvent.getTitle() == "" || newEvent.getDatetime() == "" || !newEvent.getOwner().equals(cuser)) {
+		if (newEvent.getTitle() == "" || newEvent.getTitle() == null || newEvent.getDatetime() == "" || newEvent.getDatetime() == null || !newEvent.getOwner().equals(cuser)) {
 			return "redirect:/";
 		}
 		erepo.save(newEvent);
@@ -235,9 +235,8 @@ public class EventplannerController {
     	return erepo.findById(eventId);
  	}
 	// SAVE EVENT
-	@PreAuthorize("isAuthenticated()")
 	@RequestMapping(value="/events/save")
-	public @ResponseBody String saveEventRest(Event event) {
+	public @ResponseBody Event saveEventRest(Event event) {
 		Authentication loggedUser = SecurityContextHolder.getContext().getAuthentication();
 		String userName = loggedUser.getName();
 		User user = urepo.findByUsername(userName);
@@ -247,11 +246,12 @@ public class EventplannerController {
 		System.out.println(event.getDescription());
 		System.out.println(event.getDatetime());
 		System.out.println(event.getOwner().getUsername());
-		if (event.getTitle() == "" || event.getDatetime() == "") {
-			return "redirect:/";
+		if (event.getTitle() == "" || event.getDatetime() == "" || event.getTitle() == null || event.getDatetime() == null) {
+			return newEvent;
 		}
 		erepo.save(newEvent);
-		return "redirect:../";
+		return newEvent;
 	}
+
 	 
 }

@@ -39,9 +39,8 @@ public class Comment {
 	 
 	public Comment() {}
 	
-	public Comment(Long id, String content, String datetime, User owner, Event event) {
+	public Comment(String content, String datetime, User owner, Event event) {
 		super();
-		this.id = id;
 		this.content = content;
 		this.datetime = datetime;
 		this.owner = owner;

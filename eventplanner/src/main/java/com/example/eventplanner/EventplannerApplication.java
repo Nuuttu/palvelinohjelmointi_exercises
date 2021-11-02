@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import com.example.eventplanner.domain.Comment;
 import com.example.eventplanner.domain.CommentRepository;
 import com.example.eventplanner.domain.Event;
 import com.example.eventplanner.domain.EventRepository;
@@ -60,6 +61,8 @@ public class EventplannerApplication {
 			erepo.save(event1);
 			Event event2 = new Event("Event2", "This is a event 2", formatter.format(date), urepo.findByUsername("user"), e2members);
 			erepo.save(event2);
+			
+			crepo.save(new Comment("This is a comment", formatter.format(date), user, event1));
 			
 			log.info("log indo");
 		};
