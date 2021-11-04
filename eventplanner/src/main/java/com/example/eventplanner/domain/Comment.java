@@ -28,12 +28,12 @@ public class Comment {
 	 private String datetime;
 	 
 	 @ManyToOne
-	 @JoinColumn(name = "commentOwner", nullable=false)
+	 @JoinColumn(name = "owner", nullable=false)
 	 @JsonManagedReference
 	 private User owner;
 
 	 @ManyToOne
-	 @JoinColumn(name = "commentEvent", nullable=false)
+	 @JoinColumn(name = "event", nullable=false)
 	 @JsonManagedReference
 	 private Event event;
 	 

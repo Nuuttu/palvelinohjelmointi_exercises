@@ -18,6 +18,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.MultiValueMap;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,6 +34,7 @@ import com.example.eventplanner.domain.Member;
 import com.example.eventplanner.domain.User;
 import com.example.eventplanner.domain.UserRepository;
 
+@CrossOrigin
 @Controller
 public class EventplannerController {
 	
@@ -234,9 +237,21 @@ public class EventplannerController {
     public @ResponseBody Optional<Event> findEventRest(@PathVariable("id") Long eventId) {	
     	return erepo.findById(eventId);
  	}
+	// COMMENTS
+	@RequestMapping(value = "/comments", method = RequestMethod.GET)	  
+	public @ResponseBody List<Comment> commentListRest() {
+	  return (List<Comment>) crepo.findAll();
+	}
+	// BY ID
+	@RequestMapping(value="/comments/{id}", method = RequestMethod.GET)
+    public @ResponseBody Optional<Comment> findCommentRest(@PathVariable("id") Long cId) {	
+		return crepo.findById(cId);
+ 	}
 	// SAVE EVENT
-	@RequestMapping(value="/events/save")
+	@CrossOrigin
+	@RequestMapping(value="/events/save", method = RequestMethod.POST)
 	public @ResponseBody Event saveEventRest(Event event) {
+		/*
 		Authentication loggedUser = SecurityContextHolder.getContext().getAuthentication();
 		String userName = loggedUser.getName();
 		User user = urepo.findByUsername(userName);
@@ -250,8 +265,17 @@ public class EventplannerController {
 			return newEvent;
 		}
 		erepo.save(newEvent);
-		return newEvent;
+		*/
+		return event;
 	}
+	
+	@CrossOrigin("http://localhost:8080")
+	@DeleteMapping(value="/asd/")
+	public void del(@PathVariable Long id) {
+		crepo.deleteAll();
+		
+	}
+	
 
 	 
 }

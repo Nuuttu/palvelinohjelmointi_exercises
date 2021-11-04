@@ -3,6 +3,7 @@ package com.example.eventplanner.domain;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -38,9 +39,7 @@ public class Event {
 	 @JsonManagedReference
 	 private List<User> members;
 	 
-	 @OneToMany
-	 @JoinColumn(name="event")
-	 @JsonManagedReference
+	 @OneToMany(cascade = CascadeType.ALL, mappedBy = "event")
 	 private List<Comment> comments;
 	 
 	 public Event() {}
