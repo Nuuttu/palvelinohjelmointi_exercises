@@ -29,8 +29,12 @@ public class User {
     private String role;
     
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "owner")
-    @JsonIgnoreProperties({"owner", "comments"})
+    @JsonIgnoreProperties({"owner", "comments", "members"})
     private List<Event> events;
+    
+    @ManyToMany(mappedBy = "members")
+    @JsonIgnoreProperties({"owner", "comments", "members"})
+    private List<Event> memberOf;
     
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "owner")
 	@JsonIgnoreProperties({"owner", "event"})

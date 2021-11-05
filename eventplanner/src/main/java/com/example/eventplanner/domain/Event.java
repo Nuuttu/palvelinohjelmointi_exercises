@@ -6,10 +6,12 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -36,9 +38,12 @@ public class Event {
 	 private User owner;
 	 
 	 @ManyToMany
-	 @JoinColumn(name = "event")
-	 @JsonIgnoreProperties({"events", "comments"})
-	 private List<User> members;
+	 @JoinTable(
+			  name = "event_member", 
+			  joinColumns = @JoinColumn(name = "event_id"), 
+			  inverseJoinColumns = @JoinColumn(name = "user_id"))
+	 @JsonIgnoreProperties({"events", "comments", "memberOf"})
+	 private List<User> members;    
 	 
 	 @OneToMany(cascade = CascadeType.ALL, mappedBy = "event")
 	 @JsonIgnoreProperties({"event", "owner"})
@@ -99,6 +104,7 @@ public class Event {
 	public void setMembers(List<User> members) {
 		this.members = members;
 	}
+	/*
 	public void addMember(User newMember) {
 		List<User> newList = new ArrayList<>(this.members);
 		newList.add(newMember);
@@ -109,24 +115,7 @@ public class Event {
 		newList.remove(removedMember);
 		setMembers(newList);
 	}
-	/*
-	public List<Comment> getComments() {
-		return comments;
-	}
-	public void setComments(List<Comment> comments) {
-		this.comments = comments;
-	}
-	public void addComment(Comment newComment) {
-		List<Comment> newList = new ArrayList<>(this.comments);
-		newList.add(newComment);
-		setComments(newList);
-	}
-	public void removeComment(Comment removedComment) {
-		List<Comment> newList = new ArrayList<>(this.comments);
-		newList.remove(removedComment);
-		setComments(newList);
-	}
-	 */
+*/
 	
 	@Override
 	public String toString() {

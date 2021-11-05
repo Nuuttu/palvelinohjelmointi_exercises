@@ -11,7 +11,7 @@
 <div th:replace="fragments/header :: header">&nbsp;</div>
 <div class="container">
 	<div class="p-2">
-		<h1 class="d-inline">Ogle Event</h1>
+		<h1 class="d-inline" th:text="${event.get().title}"></h1>
 		<div class="d-inline" sec:authorize="isAuthenticated()" th:object=${event}>
 			<form th:action="*{'/event/' + get().id + '/edit'}"  sec:authorize="isAuthenticated()" style="display: inline-block;">
 				<input type="submit" class="btn btn-sm btn-info" value="edit" ></input>

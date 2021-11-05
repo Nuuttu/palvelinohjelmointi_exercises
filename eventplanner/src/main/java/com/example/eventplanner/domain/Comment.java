@@ -35,7 +35,7 @@ public class Comment {
 
 	 @ManyToOne
 	 @JoinColumn(name = "event", nullable=false)
-	 @JsonIgnoreProperties({"comments", "owner"})
+	 @JsonIgnoreProperties({"comments", "owner", "members"})
 	 private Event event;
 	 
 	public Comment() {}
@@ -95,9 +95,10 @@ public class Comment {
 
 	@Override
 	public String toString() {
-		return "Comment [id=" + id + ", content=" + content + ", datetime=" + datetime + ", owner=" + owner + ", event="
-				+ event + "]";
+		return "Comment [id=" + id + ", content=" + content + ", datetime=" + datetime + ", owner=" + owner.getId() + ", event="
+				+ event.getId() + "]";
 	}
+
 
 	 
 	 

@@ -154,17 +154,31 @@ public class EventplannerController {
 		if (newEvent.getMembers().contains(newMember)) {
 			return "redirect:" + referer;
 		}
-		newEvent.addMember(newMember);
+		newEvent.getMembers().add(newMember);
 		erepo.save(newEvent);
 		return "redirect:" + referer;
 	}
+	
+	/*
+	public void addMember(User newMember) {
+		List<User> newList = new ArrayList<>(this.members);
+		newList.add(newMember);
+		setMembers(newList);
+	}
+	public void removeMember(User removedMember) {
+		List<User> newList = new ArrayList<>(this.members);
+		newList.remove(removedMember);
+		setMembers(newList);
+	}
+*/
+	
 	// DELETE MEMBER
 	@PreAuthorize("isAuthenticated()")
 	@RequestMapping(value="/event/{eid}/removemember/{mid}")
 	public String removeMember(@PathVariable("eid") Long eventId, @PathVariable("mid") Long memberId) {
 		Event dEvent = erepo.findById(eventId).orElse(null);
 		User dMember = urepo.findById(memberId).orElse(null);
-		dEvent.removeMember(dMember);
+		dEvent.getMembers().remove(dMember);
 		if (hasPermission(dEvent)) {
 			erepo.save(dEvent);
 		}
@@ -179,20 +193,14 @@ public class EventplannerController {
 		Authentication loggedUser = SecurityContextHolder.getContext().getAuthentication();
 		String userName = loggedUser.getName();
 		User cuser = urepo.findByUsername(userName);
-
 		if (newComment.getContent() == "") {
 			return "redirect:" + referer;
 		}
-		System.out.println("ASDASDASDASDASDASDDDDDDDDDDDDDDDDD");
-		
 		Date date = new Date();
 		DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm");
 		newComment.setDatetime(formatter.format(date));
 		newComment.setOwner(cuser);
 		newComment.setEvent(newEvent);
-
-		System.out.println(newComment);
-		
 		crepo.save(newComment);
 		return "redirect:" + referer;
 	}
