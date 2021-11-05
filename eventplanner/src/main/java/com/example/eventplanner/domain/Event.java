@@ -15,6 +15,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
@@ -31,15 +32,16 @@ public class Event {
 	 
 	 @ManyToOne
 	 @JoinColumn(name = "event", nullable = false)
-	 @JsonManagedReference
+	 @JsonIgnoreProperties({"events", "comments"})
 	 private User owner;
 	 
 	 @ManyToMany
 	 @JoinColumn(name = "event")
-	 @JsonManagedReference
+	 @JsonIgnoreProperties({"events", "comments"})
 	 private List<User> members;
 	 
 	 @OneToMany(cascade = CascadeType.ALL, mappedBy = "event")
+	 @JsonIgnoreProperties({"event", "owner"})
 	 private List<Comment> comments;
 	 
 	 public Event() {}

@@ -10,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -94,16 +95,20 @@ public class RController {
 		return event;
 	}
 	
-	@CrossOrigin("http://localhost:8080")
-	@DeleteMapping(value="/asd/")
-	public void del(@PathVariable Long id) {
+	@RequestMapping(value="/asd", method = RequestMethod.DELETE)
+	public void del(@PathVariable(required = false) Long id) {
 		crepo.deleteAll();
 	}
 	// ADD USER
 	@RequestMapping(value = "/signin", method = RequestMethod.POST)
-	public @ResponseBody String addUser(Model model) {
-	    User nuser = new User(); 
-	    return "signinpage";
+	public @ResponseBody String addUser(@RequestBody User data, Model model) {
+		System.out.println(data);
+		User nuser = new User(data.getUsername(), data.getPasswordHash(), data.getRole() );
+		final String encodedPassword = passwordEncoder.encode(nuser.getPasswordHash());
+		nuser.setPasswordHash(encodedPassword);
+		nuser.setRole("USER");
+	    urepo.save(nuser);
+	    return nuser.toString();
 	}
 	
 	@RequestMapping(value="/g", method=RequestMethod.POST)
