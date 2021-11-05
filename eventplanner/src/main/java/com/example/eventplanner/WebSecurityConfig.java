@@ -31,6 +31,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http
         .cors()
         .and()
+        .csrf().disable() // CSRF DISABLE; KORJAA MYÖHEMMIN; POST TOIMII
         .authorizeRequests().antMatchers("/css/**").permitAll() // Enable css when logged out
         .and()
         .authorizeRequests().antMatchers("/**").permitAll()
@@ -52,6 +53,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         auth.userDetailsService(userDetailsService).passwordEncoder(new BCryptPasswordEncoder());
     }
     
+    /*
     @Bean
     CorsConfigurationSource corsConfigurationSource() 
     {
@@ -62,4 +64,5 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         source.registerCorsConfiguration("/**", configuration);
         return source;
     }
+    */
 }
