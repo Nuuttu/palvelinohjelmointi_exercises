@@ -49,6 +49,7 @@ public class EventplannerController {
 	@Autowired 
     private BCryptPasswordEncoder passwordEncoder;
 	
+	// CHECK IF EVENT BEING CALLED IS USERS OWN
 	private boolean hasPermission(Event event) {
 		Authentication loggedUser = SecurityContextHolder.getContext().getAuthentication();
 		String userName = loggedUser.getName();
@@ -159,19 +160,6 @@ public class EventplannerController {
 		return "redirect:" + referer;
 	}
 	
-	/*
-	public void addMember(User newMember) {
-		List<User> newList = new ArrayList<>(this.members);
-		newList.add(newMember);
-		setMembers(newList);
-	}
-	public void removeMember(User removedMember) {
-		List<User> newList = new ArrayList<>(this.members);
-		newList.remove(removedMember);
-		setMembers(newList);
-	}
-*/
-	
 	// DELETE MEMBER
 	@PreAuthorize("isAuthenticated()")
 	@RequestMapping(value="/event/{eid}/removemember/{mid}")
@@ -213,6 +201,7 @@ public class EventplannerController {
 	// SAVE USER
 	@RequestMapping(value = "/user/save", method = RequestMethod.POST)
 	  public String saveUser(User user) {
+		System.out.println(user);
 		final String encodedPassword = passwordEncoder.encode(user.getPasswordHash());
 		user.setPasswordHash(encodedPassword);
 		user.setRole("USER");

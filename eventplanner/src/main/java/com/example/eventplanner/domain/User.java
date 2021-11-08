@@ -7,6 +7,7 @@ import javax.persistence.*;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
 @Table(name = "usertable")
@@ -17,7 +18,6 @@ public class User {
     @Column(name = "id", nullable = false, updatable = false)
     private Long id;
 
-    // Username with unique constraint
     @Column(name = "username", nullable = false, unique = true)
     private String username;
 
@@ -65,10 +65,12 @@ public class User {
 		this.username = username;
 	}
 
+	@JsonIgnore
 	public String getPasswordHash() {
 		return passwordHash;
 	}
 
+	@JsonProperty
 	public void setPasswordHash(String passwordHash) {
 		this.passwordHash = passwordHash;
 	}
